@@ -1,4 +1,5 @@
 COMMENT_CHAR = '#'
+INPUT_FILE = 'test1.asm'
 
 DEBUG = True
 
@@ -35,6 +36,7 @@ def build_data_table(lines_list:list):
 
   # return if data section is empty
   if data_header_index+1 == text_header_index:
+    if DEBUG: print('.data empty')
     return data_table, data_list, lines_list
   
   for i in range(data_header_index, text_header_index):
@@ -77,7 +79,7 @@ def post_process(asdasd):
 
 def main():
   # Defining the assembly file to read from
-  filename = "test1.asm"
+  filename = INPUT_FILE
 
   # Read all lines from the assembly file, and store them in a list
   with open(filename, "r") as infile:
