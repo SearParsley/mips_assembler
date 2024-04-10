@@ -65,7 +65,6 @@ def build_data_table(lines_list:list):
 
     data_list.append(split_line[1])
   
-
   if DEBUG:
     print(data_table)
     print(data_list)
@@ -90,14 +89,6 @@ def create_label_table(lines:list):
   if DEBUG:
     print(label_table)
     print(instruction_list)
-
-
-
-
-
-
-
-
 
   return label_table, instruction_list
 
