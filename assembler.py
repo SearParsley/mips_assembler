@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'test2.asm'
+INPUT_FILE = 'test3.asm'
 
 DEBUG = True
 
@@ -20,11 +20,12 @@ def preprocess_lines(lines_list:list):
 
 
 
-# TODO: Use the preprocessed program to build data table
+# Use the preprocessed program to build data table
 def build_data_table(lines_list:list):
   data_table = {}
   data_list = []
   data_lines_list = []
+  text_lines_list = []
 
   # split instructions based on headers
   text_header_index = 0
@@ -32,19 +33,29 @@ def build_data_table(lines_list:list):
     text_header_index = lines_list.index('.text')
     text_lines_list = lines_list[text_header_index+1:]
   except:
-    if DEBUG: print('.text absent')
+    if DEBUG:
+      print('.text absent')
+      print(data_table)
+      print(data_list)
     return data_table, data_list, lines_list
 
   data_header_index = -1
   try: data_header_index = lines_list.index('.data')
   except: 
-    if DEBUG: print('.data absent')
+    if DEBUG:
+      print('.data absent')
+      print(data_table)
+      print(data_list)
+    return data_table, data_list, text_lines_list
 
   data_lines_list = lines_list[data_header_index+1:text_header_index]
   
   # return if data section is empty
   if len(data_lines_list) == 0:
-    if DEBUG: print('.data empty')
+    if DEBUG:
+      print('.data empty')
+      print(data_table)
+      print(data_list)
     return data_table, data_list, text_lines_list
   
   for i in range(len(data_lines_list)):
@@ -54,7 +65,6 @@ def build_data_table(lines_list:list):
 
     data_list.append(split_line[1])
   
-  text_lines_list = []
 
   if DEBUG:
     print(data_table)
