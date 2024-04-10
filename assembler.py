@@ -95,9 +95,38 @@ def create_label_table(lines:list):
 
 
 
-# TODO: Encode the program into a list of binary strings
-def encode_program(encoded_program):
+# TODO: write encoding function
+# Encode the program into a list of binary strings
+def encode_instruction(line_num:int, instruction:str, label_table:dict, data_table:dict):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   pass
+
+
+
+def encode_program(lines_list:list, label_table:dict, data_table:dict):
+  encoded_lines_list = []
+  for i in range(len(lines_list)):
+    encoded_lines_list.append(encode_instruction(i, lines_list[i], label_table, data_table))
 
 
 
@@ -122,7 +151,7 @@ def main():
 
   label_table, lines = create_label_table(lines)
 
-  # encoded_program = encode_program(lines, label_table, data_table)
+  encoded_program = encode_program(lines, label_table, data_table)
 
   # # Convert the strings to hexadecimal and write them to a file
   # hex_program = post_process(encoded_program)
