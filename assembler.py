@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'test3.asm'
+INPUT_FILE = 'test1.asm'
 
 DEBUG = True
 
@@ -74,9 +74,32 @@ def build_data_table(lines_list:list):
 
 
 
-# TODO: Build a label table and strip out the labels from the code
+# Build a label table and strip out the labels from the code
 def create_label_table(lines:list):
-  return lines, lines
+
+  label_table = {}
+  instruction_list = []
+
+  instruction_count = 0
+  for line in lines:
+    if line.endswith(':'): label_table.update({line[:-1]: instruction_count})
+    else:
+      instruction_list.append(line)
+      instruction_count += 1
+
+  if DEBUG:
+    print(label_table)
+    print(instruction_list)
+
+
+
+
+
+
+
+
+
+  return label_table, instruction_list
 
 
 
@@ -106,7 +129,7 @@ def main():
 
   data_table, data_list, lines = build_data_table(lines)
 
-  # label_table, lines = create_label_table(lines)
+  label_table, lines = create_label_table(lines)
 
   # encoded_program = encode_program(lines, label_table, data_table)
 
