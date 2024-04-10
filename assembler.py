@@ -28,7 +28,9 @@ def build_data_table(lines_list:list):
 
   # split instructions based on headers
   text_header_index = 0
-  try: text_header_index = lines_list.index('.text')
+  try:
+    text_header_index = lines_list.index('.text')
+    text_lines_list = lines_list[text_header_index+1:]
   except:
     if DEBUG: print('.text absent')
     return data_table, data_list, lines_list
@@ -37,29 +39,21 @@ def build_data_table(lines_list:list):
   try: data_header_index = lines_list.index('.data')
   except: 
     if DEBUG: print('.data absent')
-    text_lines_list = lines_list[text_header_index+1:]
 
   data_lines_list = lines_list[data_header_index+1:text_header_index]
   
   # return if data section is empty
   if len(data_lines_list) == 0:
     if DEBUG: print('.data empty')
-    return data_table, data_list, lines_list
+    return data_table, data_list, text_lines_list
   
-  for line_text in data_lines_list:
-    line = line_text.split(':')
-    for part in line: part.strip()
-    data_table.update({})
+  for i in range(len(data_lines_list)):
+    split_line = data_lines_list[i].split(':')
+    for part in split_line: part.strip()
+    data_table.update({split_line[0]: i})
+
+    data_list.append(split_line[1])
   
-  
-    # TODO: map of labels to memory addresses (data_table)
-
-    # TODO: list of data values (data_list)
-
-
-
-  # FIXME: remove headers before? or after? figure it out
-
   text_lines_list = []
 
   if DEBUG:
