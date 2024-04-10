@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'test1.asm'
+INPUT_FILE = 'test2.asm'
 
 DEBUG = True
 
@@ -24,36 +24,49 @@ def preprocess_lines(lines_list:list):
 def build_data_table(lines_list:list):
   data_table = {}
   data_list = []
+  data_lines_list = []
 
   # split instructions based on headers
   text_header_index = 0
   try: text_header_index = lines_list.index('.text')
-  except: pass
+  except:
+    if DEBUG: print('.text absent')
+    return data_table, data_list, lines_list
 
   data_header_index = -1
   try: data_header_index = lines_list.index('.data')
-  except: pass
+  except: 
+    if DEBUG: print('.data absent')
+    text_lines_list = lines_list[text_header_index+1:]
 
+  data_lines_list = lines_list[data_header_index+1:text_header_index]
+  
   # return if data section is empty
-  if data_header_index+1 == text_header_index:
+  if len(data_lines_list) == 0:
     if DEBUG: print('.data empty')
     return data_table, data_list, lines_list
   
-  for i in range(data_header_index, text_header_index):
+  for line_text in data_lines_list:
+    line = line_text.split(':')
+    for part in line: part.strip()
+    data_table.update({})
+  
+  
     # TODO: map of labels to memory addresses (data_table)
 
     # TODO: list of data values (data_list)
-    pass
+
+
 
   # FIXME: remove headers before? or after? figure it out
 
-  new_lines_list = []
+  text_lines_list = []
 
   if DEBUG:
     print(data_table)
     print(data_list)
   
-  return data_table, data_list, new_lines_list
+  return data_table, data_list, text_lines_list
 
 
 
