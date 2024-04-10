@@ -98,24 +98,40 @@ def create_label_table(lines:list):
 # TODO: write encoding function
 # Encode the program into a list of binary strings
 def encode_instruction(line_num:int, instruction:str, label_table:dict, data_table:dict):
+  
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  match instruction.split('', 1):
+    case ['add', args]:
+      pass
+    case ['sub', args]:
+      pass
+    case ['and', args]:
+      pass
+    case ['or', args]:
+      pass
+    case ['slt', args]:
+      pass
+    case ['addi', args]:
+      pass
+    case ['beq', args]:
+      pass
+    case ['bne', args]:
+      pass
+    case ['lw', args]:
+      pass
+    case ['sw', args]:
+      pass
+    case ['j', args]:
+      pass
+    case ['jr', args]:
+      pass
+    case ['jal', args]:
+      pass
+    case _:
+      raise Exception('Invalid instruction given')
 
 
 
