@@ -99,13 +99,27 @@ def create_label_table(lines:list):
 # Encode the program into a list of binary strings
 def encode_instruction(line_num:int, instruction:str, label_table:dict, data_table:dict):
   
+  format = ''
+  
+  opcode = '0000'
 
 
 
 
   match instruction.split('', 1):
     case ['add', args]:
-      pass
+      args_list = strip_args(args, 1)
+
+      rd = register_to_binary(args_list[0])
+      rs = register_to_binary(args_list[1])
+      rt = register_to_binary(args_list[2])
+      
+      opcode = '0000'
+
+      funct = '010'
+
+      output = opcode + rs + rt + rd + funct
+
     case ['sub', args]:
       pass
     case ['and', args]:
@@ -132,10 +146,33 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       pass
     case _:
       raise Exception('Invalid instruction given')
+  
+  return output
 
 
 
-  pass
+def strip_args(args:str, instruction_type:int):
+  output = []
+  if instruction_type == 1 :
+
+    args_list = args.split(',')
+    for i in range(len(args_list)):
+      output.append(args_list[i].strip())
+
+    return args_list
+  
+  elif instruction_type == 2 :
+
+    args_list = args.split(',')
+    args_list[0] = args_list[0].strip()
+    output.append(args_list[0])
+
+    temp = args_list[1]
+
+    return args_list
+  
+  return []
+
 
 
 
@@ -143,6 +180,22 @@ def encode_program(lines_list:list, label_table:dict, data_table:dict):
   encoded_lines_list = []
   for i in range(len(lines_list)):
     encoded_lines_list.append(encode_instruction(i, lines_list[i], label_table, data_table))
+
+
+
+
+def register_to_binary(reg:str):
+  num = int(reg[1])
+  if reg[0] != 'R' or num > 7: raise Exception('Incorrect register string')
+  output = f'{reg[1]:03b}'
+  return output
+
+
+
+
+def decimal_to_binary(num:int):
+  output = f"{(1 << 16) + num:016b}" if num < 0 else f"{num:016b}"
+  return output
 
 
 
