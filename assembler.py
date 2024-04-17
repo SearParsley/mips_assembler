@@ -99,11 +99,7 @@ def create_label_table(lines:list):
 # Encode the program into a list of binary strings
 def encode_instruction(line_num:int, instruction:str, label_table:dict, data_table:dict):
   
-  format = ''
-  
-  opcode = '0000'
-
-
+  # TODO: implement label_table, data_table, and line_num args
 
 
   match instruction.split('', 1):
@@ -121,39 +117,151 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       output = opcode + rs + rt + rd + funct
 
     case ['sub', args]:
-      pass
+      args_list = strip_args(args)
+
+      rd = register_to_binary(args_list[0])
+      rs = register_to_binary(args_list[1])
+      rt = register_to_binary(args_list[2])
+      
+      opcode = '0000'
+
+      funct = '110'
+
+      output = opcode + rs + rt + rd + funct
+      
     case ['and', args]:
-      pass
+      args_list = strip_args(args)
+
+      rd = register_to_binary(args_list[0])
+      rs = register_to_binary(args_list[1])
+      rt = register_to_binary(args_list[2])
+      
+      opcode = '0000'
+
+      funct = '000'
+
+      output = opcode + rs + rt + rd + funct
+
     case ['or', args]:
-      pass
+      args_list = strip_args(args)
+
+      rd = register_to_binary(args_list[0])
+      rs = register_to_binary(args_list[1])
+      rt = register_to_binary(args_list[2])
+      
+      opcode = '0000'
+
+      funct = '001'
+
+      output = opcode + rs + rt + rd + funct
+
     case ['slt', args]:
-      pass
+      args_list = strip_args(args)
+
+      rd = register_to_binary(args_list[0])
+      rs = register_to_binary(args_list[1])
+      rt = register_to_binary(args_list[2])
+      
+      opcode = '0000'
+
+      funct = '111'
+
+      output = opcode + rs + rt + rd + funct
+
     case ['addi', args]:
-      pass
+      args_list = strip_args(args)
+
+      rt = register_to_binary(args_list[0])
+      rs = register_to_binary(args_list[1])
+      imm = args_list[2]
+      
+      opcode = '0101'
+
+      output = opcode + rs + rt + imm
+
     case ['beq', args]:
-      pass
+      args_list = strip_args(args)
+
+      rs = register_to_binary(args_list[0])
+      rt = register_to_binary(args_list[1])
+      label = args_list[2]
+      
+      opcode = '0011'
+
+      output = opcode + rs + rt + label
+
     case ['bne', args]:
-      pass
+      args_list = strip_args(args)
+
+      rs = register_to_binary(args_list[0])
+      rt = register_to_binary(args_list[1])
+      label = args_list[2]
+      
+      opcode = '0110'
+
+      output = opcode + rs + rt + label
+
     case ['lw', args]:
-      pass
+      args_list = strip_args(args, 2)
+
+      rt = register_to_binary(args_list[0])
+      imm = args_list[1]
+      rs = register_to_binary(args_list[2])
+      
+      opcode = '0001'
+
+      output = opcode + rs + rt + imm
+
     case ['sw', args]:
-      pass
+      args_list = strip_args(args, 2)
+
+      rt = register_to_binary(args_list[0])
+      imm = args_list[1]
+      rs = register_to_binary(args_list[2])
+      
+      opcode = '0010'
+
+      output = opcode + rs + rt + imm
+
     case ['j', args]:
-      pass
+      args_list = strip_args(args)
+
+      imm = args_list[1]
+      
+      opcode = '0100'
+
+      output = opcode + imm
+
     case ['jr', args]:
-      pass
+      args_list = strip_args(args)
+
+      rs = args_list[1]
+      
+      opcode = '0111'
+
+      output = opcode + rs + '000000000'
+
     case ['jal', args]:
-      pass
+      args_list = strip_args(args)
+
+      imm = args_list[1]
+      
+      opcode = '1000'
+
+      output = opcode + imm
+
     case _:
       raise Exception('Invalid instruction given')
   
+  # TODO: write debug message
+  if DEBUG: print(f'{output}')
   return output
 
 
 
 def strip_args(args:str, instruction_type:int=1):
   output = []
-  
+
   if instruction_type == 1 :
 
     args_list = args.split(',')
@@ -181,7 +289,7 @@ def encode_program(lines_list:list, label_table:dict, data_table:dict):
   encoded_lines_list = []
   for i in range(len(lines_list)):
     encoded_lines_list.append(encode_instruction(i, lines_list[i], label_table, data_table))
-
+  return encoded_lines_list
 
 
 
