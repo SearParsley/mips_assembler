@@ -108,7 +108,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
   match instruction.split('', 1):
     case ['add', args]:
-      args_list = strip_args(args, 1)
+      args_list = strip_args(args)
 
       rd = register_to_binary(args_list[0])
       rs = register_to_binary(args_list[1])
@@ -151,25 +151,26 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
 
 
-def strip_args(args:str, instruction_type:int):
+def strip_args(args:str, instruction_type:int=1):
   output = []
+  
   if instruction_type == 1 :
 
     args_list = args.split(',')
     for i in range(len(args_list)):
       output.append(args_list[i].strip())
 
-    return args_list
+    return output
   
   elif instruction_type == 2 :
 
     args_list = args.split(',')
-    args_list[0] = args_list[0].strip()
-    output.append(args_list[0])
+    output.append(args_list[0].strip())
+    temp = args_list[1].split('(')
+    output.append(temp[0].strip())
+    output.append(temp[1].strip('() '))
 
-    temp = args_list[1]
-
-    return args_list
+    return output
   
   return []
 
