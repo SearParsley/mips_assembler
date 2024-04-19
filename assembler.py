@@ -95,12 +95,10 @@ def create_label_table(lines:list):
 
 
 
-# TODO: write encoding function
 # Encode the program into a list of binary strings
 def encode_instruction(line_num:int, instruction:str, label_table:dict, data_table:dict):
-  
-  # TODO: implement label_table, data_table, and line_num args
 
+  if DEBUG: print(f'{instruction}: ', end=None)
 
   match instruction.split('', 1):
     case ['add', args]:
@@ -116,6 +114,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
       output = opcode + rs + rt + rd + funct
 
+      if DEBUG: print(f'{opcode} {rs} {rt} {rd} {funct}')
+
     case ['sub', args]:
       args_list = strip_args(args)
 
@@ -128,6 +128,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       funct = '110'
 
       output = opcode + rs + rt + rd + funct
+
+      if DEBUG: print(f'{opcode} {rs} {rt} {rd} {funct}')
       
     case ['and', args]:
       args_list = strip_args(args)
@@ -142,6 +144,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
       output = opcode + rs + rt + rd + funct
 
+      if DEBUG: print(f'{opcode} {rs} {rt} {rd} {funct}')
+
     case ['or', args]:
       args_list = strip_args(args)
 
@@ -154,6 +158,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       funct = '001'
 
       output = opcode + rs + rt + rd + funct
+
+      if DEBUG: print(f'{opcode} {rs} {rt} {rd} {funct}')
 
     case ['slt', args]:
       args_list = strip_args(args)
@@ -168,6 +174,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
       output = opcode + rs + rt + rd + funct
 
+      if DEBUG: print(f'{opcode} {rs} {rt} {rd} {funct}')
+
     case ['addi', args]:
       args_list = strip_args(args)
 
@@ -179,16 +187,22 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
       output = opcode + rs + rt + imm
 
+      if DEBUG: print(f'{opcode} {rs} {rt} {imm}')
+
     case ['beq', args]:
       args_list = strip_args(args)
 
       rs = register_to_binary(args_list[0])
       rt = register_to_binary(args_list[1])
       label = args_list[2]
+
+      label_location = decimal_to_binary(label_table[label], 6)
       
       opcode = '0011'
 
-      output = opcode + rs + rt + label
+      output = opcode + rs + rt + label_location
+
+      if DEBUG: print(f'{opcode} {rs} {rt} {label_location}')
 
     case ['bne', args]:
       args_list = strip_args(args)
@@ -196,41 +210,68 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       rs = register_to_binary(args_list[0])
       rt = register_to_binary(args_list[1])
       label = args_list[2]
+
+      label_location = decimal_to_binary(label_table[label], 6)
       
       opcode = '0110'
 
-      output = opcode + rs + rt + label
+      output = opcode + rs + rt + label_location
+
+      if DEBUG: print(f'{opcode} {rs} {rt} {label_location}')
 
     case ['lw', args]:
       args_list = strip_args(args, 2)
 
       rt = register_to_binary(args_list[0])
-      imm = args_list[1]
-      rs = register_to_binary(args_list[2])
-      
+
       opcode = '0001'
 
-      output = opcode + rs + rt + imm
+      if len(args_list) == 2:
+        data = decimal_to_binary(data_table[args_list[1]], 6)
+        output = opcode + '000' + rt + data
+
+        if DEBUG: print(f'{opcode} 000 {rt} {data}')
+
+      else:
+        imm = args_list[1]
+        rs = register_to_binary(args_list[2])
+        output = opcode + rs + rt + imm
+
+        if DEBUG: print(f'{opcode} {rs} {rt} {imm}')
+
 
     case ['sw', args]:
       args_list = strip_args(args, 2)
 
       rt = register_to_binary(args_list[0])
-      imm = args_list[1]
-      rs = register_to_binary(args_list[2])
-      
+
       opcode = '0010'
 
-      output = opcode + rs + rt + imm
+      if len(args_list) == 2:
+        data = decimal_to_binary(data_table[args_list[1]], 6)
+        output = opcode + '000' + rt + data
+
+        if DEBUG: print(f'{opcode} 000 {rt} {data}')
+
+      else:
+        imm = args_list[1]
+        rs = register_to_binary(args_list[2])
+        output = opcode + rs + rt + imm
+        
+        if DEBUG: print(f'{opcode} {rs} {rt} {imm}')
 
     case ['j', args]:
       args_list = strip_args(args)
 
-      imm = args_list[1]
+      label = args_list[1]
+
+      label_location = decimal_to_binary(label_table[label], 12)
       
       opcode = '0100'
 
-      output = opcode + imm
+      output = opcode + label_location
+
+      if DEBUG: print(f'{opcode} {label_location}')
 
     case ['jr', args]:
       args_list = strip_args(args)
@@ -241,20 +282,24 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
       output = opcode + rs + '000000000'
 
+      if DEBUG: print(f'{opcode} {rs} 000000000')
+
     case ['jal', args]:
       args_list = strip_args(args)
 
-      imm = args_list[1]
+      label = args_list[1]
+
+      label_location = decimal_to_binary(label_table[label], 12)
       
       opcode = '1000'
 
-      output = opcode + imm
+      output = opcode + label_location
+
+      if DEBUG: print(f'{opcode} {label_location}')
 
     case _:
       raise Exception('Invalid instruction given')
   
-  # TODO: write debug message
-  if DEBUG: print(f'{output}')
   return output
 
 
@@ -267,8 +312,6 @@ def strip_args(args:str, instruction_type:int=1):
     args_list = args.split(',')
     for i in range(len(args_list)):
       output.append(args_list[i].strip())
-
-    return output
   
   elif instruction_type == 2 :
 
@@ -276,11 +319,10 @@ def strip_args(args:str, instruction_type:int=1):
     output.append(args_list[0].strip())
     temp = args_list[1].split('(')
     output.append(temp[0].strip())
-    output.append(temp[1].strip('() '))
-
-    return output
+    if len(temp) == 2:
+      output.append(temp[1].strip('() '))
   
-  return []
+  return output
 
 
 
@@ -302,8 +344,8 @@ def register_to_binary(reg:str):
 
 
 
-def decimal_to_binary(num:int):
-  output = f"{(1 << 16) + num:016b}" if num < 0 else f"{num:016b}"
+def decimal_to_binary(num:int, length:int=16):
+  output = f"{(1 << length) + num:0{length}b}" if num < 0 else f"{num:0{length}b}"
   return output
 
 
