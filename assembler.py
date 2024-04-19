@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'task4_test1.asm'
+INPUT_FILE = 'task4_test3.asm'
 
 DEBUG = True
 
@@ -196,6 +196,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       rt = register_to_binary(args_list[1])
       label = args_list[2]
 
+      # FIXME: beq label_location
+
       label_location = decimal_to_binary(label_table[label], 6)
       
       opcode = '0011'
@@ -210,6 +212,8 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       rs = register_to_binary(args_list[0])
       rt = register_to_binary(args_list[1])
       label = args_list[2]
+
+      # FIXME: bne label_location
 
       label_location = decimal_to_binary(label_table[label], 6)
       
@@ -233,7 +237,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
         if DEBUG: print(f'{opcode} 000 {rt} {data}')
 
       else:
-        imm = args_list[1]
+        imm = decimal_to_binary(int(args_list[1]), 6)
         rs = register_to_binary(args_list[2])
         output = opcode + rs + rt + imm
 
@@ -254,7 +258,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
         if DEBUG: print(f'{opcode} 000 {rt} {data}')
 
       else:
-        imm = args_list[1]
+        imm = decimal_to_binary(int(args_list[1]), 6)
         rs = register_to_binary(args_list[2])
         output = opcode + rs + rt + imm
         
@@ -276,18 +280,18 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
     case ['jr', args]:
       args_list = strip_args(args)
 
-      rs = args_list[0]
+      rs = register_to_binary(args_list[0])
       
       opcode = '0111'
 
       output = opcode + rs + '000000000'
 
-      if DEBUG: print(f'{opcode} {rs} 000000000')
+      if DEBUG: print(f'{opcode} {rs} 000 000 000')
 
     case ['jal', args]:
       args_list = strip_args(args)
 
-      label = args_list[1]
+      label = args_list[0]
 
       label_location = decimal_to_binary(label_table[label], 12)
       
