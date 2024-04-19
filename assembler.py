@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'test1.asm'
+INPUT_FILE = 'task4_test1.asm'
 
 DEBUG = True
 
@@ -98,9 +98,9 @@ def create_label_table(lines:list):
 # Encode the program into a list of binary strings
 def encode_instruction(line_num:int, instruction:str, label_table:dict, data_table:dict):
 
-  if DEBUG: print(f'{instruction}: ', end=None)
+  # if DEBUG: print(f'{instruction}: ', end=None)
 
-  match instruction.split('', 1):
+  match instruction.split(' ', 1):
     case ['add', args]:
       args_list = strip_args(args)
 
@@ -181,7 +181,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
 
       rt = register_to_binary(args_list[0])
       rs = register_to_binary(args_list[1])
-      imm = args_list[2]
+      imm = decimal_to_binary(int(args_list[2]), 6)
       
       opcode = '0101'
 
@@ -263,7 +263,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
     case ['j', args]:
       args_list = strip_args(args)
 
-      label = args_list[1]
+      label = args_list[0]
 
       label_location = decimal_to_binary(label_table[label], 12)
       
@@ -276,7 +276,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
     case ['jr', args]:
       args_list = strip_args(args)
 
-      rs = args_list[1]
+      rs = args_list[0]
       
       opcode = '0111'
 
@@ -338,7 +338,7 @@ def encode_program(lines_list:list, label_table:dict, data_table:dict):
 def register_to_binary(reg:str):
   num = int(reg[1])
   if reg[0] != 'R' or num > 7: raise Exception('Incorrect register string')
-  output = f'{reg[1]:03b}'
+  output = f'{num:03b}'
   return output
 
 
