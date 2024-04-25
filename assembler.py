@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'task5_test2.asm'
+INPUT_FILE = 'tests/task5_test2.asm'
 
 DEBUG = True
 
