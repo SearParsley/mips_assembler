@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'task4_test2.asm'
+INPUT_FILE = 'task5_test2.asm'
 
 DEBUG = True
 
@@ -60,14 +60,15 @@ def build_data_table(lines_list:list):
   
   for i in range(len(data_lines_list)):
     split_line = data_lines_list[i].split(':')
-    for part in split_line: part.strip()
+    for i in range(len(split_line)):
+      split_line[i] = split_line[i].strip()
     data_table.update({split_line[0]: i})
 
     data_list.append(split_line[1])
   
   if DEBUG:
     print(data_table)
-    print(data_list)
+    print(data_list) #TODO: asd
   
   return data_table, data_list, text_lines_list
 
@@ -355,8 +356,15 @@ def decimal_to_binary(num:int, length:int=16):
 
 
 
-def post_process(asdasd):
-  pass
+def post_process(lines:list, base:int=2):
+  output = []
+
+  for line in lines:
+    decimal_num = int(line, base)
+    hex_num = format(decimal_num, 'x')
+    output.append(str(hex_num))
+
+  return output
 
 
 
@@ -377,17 +385,17 @@ def main():
 
   encoded_program = encode_program(lines, label_table, data_table)
 
-  # # Convert the strings to hexadecimal and write them to a file
-  # hex_program = post_process(encoded_program)
-  # with open("output.hex", "w") as outfile:
-  #     outfile.write("v3.0 hex words addressed\n00: ")
-  #     outfile.writelines(hex_program)
+  # Convert the strings to hexadecimal and write them to a file
+  hex_program = post_process(encoded_program)
+  with open("output.hex", "w") as outfile:
+      outfile.write("v3.0 hex words addressed\n00: ")
+      outfile.writelines([f"{h:04} " for h in hex_program])
 
-  # # Convert the data list to hexadecimal and write it to a file
-  # with open("data.hex", "w") as outfile:
-  #     outfile.write("v3.0 hex words addressed\n00: ")
-  #     outfile.writelines([f"{d:04x} " for d in data_list])
-
+  # Convert the data list to hexadecimal and write it to a file
+  hex_data = post_process(data_list, 0)
+  with open("data.hex", "w") as outfile:
+      outfile.write("v3.0 hex words addressed\n00: ")
+      outfile.writelines([f"{d:>04} " for d in hex_data])
 
 
 
