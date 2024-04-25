@@ -1,5 +1,5 @@
 COMMENT_CHAR = '#'
-INPUT_FILE = 'task3_test1.asm'
+INPUT_FILE = 'task4_test2.asm'
 
 DEBUG = True
 
@@ -196,9 +196,9 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       rt = register_to_binary(args_list[1])
       label = args_list[2]
 
-      # FIXME: beq label_location
+      label_num = label_table[label]
 
-      label_location = decimal_to_binary(label_table[label], 6)
+      label_location = decimal_to_binary(label_num - line_num - 1, 6)
       
       opcode = '0011'
 
@@ -213,9 +213,9 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       rt = register_to_binary(args_list[1])
       label = args_list[2]
 
-      # FIXME: bne label_location
+      label_num = label_table[label]
 
-      label_location = decimal_to_binary(label_table[label], 6)
+      label_location = decimal_to_binary(label_num - line_num - 1, 6)
       
       opcode = '0110'
 
