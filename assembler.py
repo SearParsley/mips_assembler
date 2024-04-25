@@ -68,7 +68,7 @@ def build_data_table(lines_list:list):
   
   if DEBUG:
     print(data_table)
-    print(data_list) #TODO: asd
+    print(data_list)
   
   return data_table, data_list, text_lines_list
 
