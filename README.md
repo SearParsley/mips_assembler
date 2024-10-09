@@ -1,5 +1,7 @@
 # mips_assembler
- 
+
+This project takes an `.asm` file and converts it into machine instructions to be used in a custom processor created in Logisim.
+
 ## Time Table
 
 | date |   time  |
