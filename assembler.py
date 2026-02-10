@@ -1,5 +1,7 @@
+import sys
+
 COMMENT_CHAR = '#'
-INPUT_FILE = 'tests/task5_test2.asm'
+INPUT_FILE = 'tests/task1_test1.asm'
 
 DEBUG = True
 
@@ -303,7 +305,7 @@ def encode_instruction(line_num:int, instruction:str, label_table:dict, data_tab
       if DEBUG: print(f'{opcode} {label_location}')
 
     case _:
-      raise Exception('Invalid instruction given')
+      raise Exception('Invalid instruction given: ' + instruction)
   
   return output
 
@@ -371,7 +373,7 @@ def post_process(lines:list, base:int=2):
 
 def main():
   # Defining the assembly file to read from
-  filename = INPUT_FILE
+  filename = sys.argv[1] if len(sys.argv) > 1 else INPUT_FILE
 
   # Read all lines from the assembly file, and store them in a list
   with open(filename, "r") as infile:
@@ -390,12 +392,14 @@ def main():
   with open("output.hex", "w") as outfile:
       outfile.write("v3.0 hex words addressed\n00: ")
       outfile.writelines([f"{h:04} " for h in hex_program])
+      outfile.write("\n")
 
   # Convert the data list to hexadecimal and write it to a file
   hex_data = post_process(data_list, 0)
   with open("data.hex", "w") as outfile:
       outfile.write("v3.0 hex words addressed\n00: ")
       outfile.writelines([f"{d:>04} " for d in hex_data])
+      outfile.write("\n")
 
 
 
