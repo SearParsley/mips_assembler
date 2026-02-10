@@ -3,9 +3,9 @@
 
 main:
     # Load immediate values into registers
-    li R1, 10
-    li R2, 20
-    li R3, 30
+    addi R1, R0, 10
+    addi R2, R0, 20
+    addi R3, R0, 30
 
     # Add the values in R2 and R3, and store the result in R4
     add R4, R2, R3
