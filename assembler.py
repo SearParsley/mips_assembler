@@ -3,7 +3,7 @@ import sys
 COMMENT_CHAR = '#'
 INPUT_FILE = 'tests/task1_test1.asm'
 
-DEBUG = True
+DEBUG = False
 
 
 # Preprocess the lines to remove comments and whitespace
