@@ -1,15 +1,46 @@
-# mips_assembler
+# Custom MIPS Assembler
 
-This project takes an `.asm` file and converts it into machine instructions to be used in a custom processor created in Logisim.
+A MIPS assembler that translates `.asm` files into `.hex` machine code for a custom processor.
 
-## Time Table
+Demonstrates parsing, instruction encoding, symbol resolution, and output generation; hardware access is not required.
 
-| date |   time  |
-| ---- | ------- |
-| 4/9  | 2 hrs   |
-| 4/10 | 2.5 hrs |
-| 4/16 | 1.5 hrs |
-| 4/19 | 2.5 hrs |
-| 4/20 | 1.5 hrs |
+## Technical Focus
 
-Total: 9 hrs
+- Parsing, lexing, and tokenization of MIPS assembly
+- Symbol table management and label resolution
+- Instruction encoding into `.hex` format
+- Input validation and error handling
+- Modular design for future instruction set extensions
+
+## Constraints & Limitations
+
+- Targets a custom processor; physical hardware not required
+- Only a subset of instructions is supported, scoped specifically for this project
+- Testing is done via provided `.asm` files and expected `.hex` output
+- Design prioritizes correctness and clarity, with future extensibility considered
+
+## Example Usage
+
+1. Clone repository:
+
+```bash
+git clone https://github.com/SearParsley/mips-assembler.git
+cd mips-assembler
+```
+
+2. Assemble a file:
+
+```bash
+python assembler.py tests/task1_test1.asm
+```
+
+3. Output:
+
+`output.hex`:
+
+```bash
+v3.0 hex words addressed
+00: 5040 508a 3282 5241 4002
+```
+
+> Reviewers can inspect `output.hex` and `data.hex` to verify the assembler logic without needing the processor.
