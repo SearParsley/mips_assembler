@@ -1,5 +1,5 @@
 # other
-.hex
+*.hex
 test.asm
 
 # Byte-compiled / optimized / DLL files
