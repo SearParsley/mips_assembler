@@ -46,7 +46,7 @@ return_sum:
   # restore stack
   lw R3, 0(R6)
   lw R7, 4(R6)
-  addi R6, R6, 8-
+  addi R6, R6, -8
   jr R7
 
 end:
