@@ -36,6 +36,8 @@ python assembler.py tests/task1_test1.asm
 
 3. Output:
 
+`output.hex`:
+
 ```bash
 v3.0 hex words addressed
 00: 5040 508a 3282 5241 4002
